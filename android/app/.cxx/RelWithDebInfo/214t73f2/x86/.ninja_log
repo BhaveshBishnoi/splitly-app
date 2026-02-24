@@ -1,6 +1,0 @@
-# ninja log v5
-3	40	0	C:/Users/ibhav/OneDrive/Desktop/contriApp/android/app/.cxx/RelWithDebInfo/214t73f2/x86/CMakeFiles/cmake.verify_globs	11c62f36e0cc2d0e
-1	3152	7577651172620936	CMakeFiles/appmodules.dir/C_/Users/ibhav/OneDrive/Desktop/contriApp/android/app/build/generated/autolinking/src/main/jni/autolinking.cpp.o	fe5f75e73c25173c
-5	3559	7577651176608511	CMakeFiles/appmodules.dir/OnLoad.cpp.o	635e56ef373dfe7c
-3559	3644	7577651177601091	C:/Users/ibhav/OneDrive/Desktop/contriApp/android/app/build/intermediates/cxx/RelWithDebInfo/214t73f2/obj/x86/libappmodules.so	7290932c555babe4
-2	25	0	C:/Users/ibhav/OneDrive/Desktop/contriApp/android/app/.cxx/RelWithDebInfo/214t73f2/x86/CMakeFiles/cmake.verify_globs	11c62f36e0cc2d0e

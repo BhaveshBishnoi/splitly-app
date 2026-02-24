@@ -1,3 +1,0 @@
-C:/Users/ibhav/OneDrive/Desktop/contriApp/android/app/.cxx/RelWithDebInfo/214t73f2/armeabi-v7a/CMakeFiles/appmodules.dir
-C:/Users/ibhav/OneDrive/Desktop/contriApp/android/app/.cxx/RelWithDebInfo/214t73f2/armeabi-v7a/CMakeFiles/edit_cache.dir
-C:/Users/ibhav/OneDrive/Desktop/contriApp/android/app/.cxx/RelWithDebInfo/214t73f2/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -1,1 +1,0 @@
-C:\Users\ibhav\OneDrive\Desktop\contriApp\android\app\build\intermediates\cxx\RelWithDebInfo\214t73f2\obj\arm64-v8a
