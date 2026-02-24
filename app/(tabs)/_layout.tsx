@@ -1,32 +1,32 @@
 import { useApp } from '@/app/context/AppContext';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const COLORS = {
+const C = {
     active: '#bb86fc',
-    inactive: '#555',
-    bg: '#141414',
-    border: 'rgba(255,255,255,0.07)',
+    inactive: '#4a4a5a',
+    bg: '#0d0f14',
+    border: 'rgba(255,255,255,0.06)',
 };
 
 export default function TabsLayout() {
     const insets = useSafeAreaInsets();
-    const { expenses, members } = useApp();
+    const { expenses } = useApp();
 
     return (
         <Tabs
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: COLORS.active,
-                tabBarInactiveTintColor: COLORS.inactive,
+                tabBarActiveTintColor: C.active,
+                tabBarInactiveTintColor: C.inactive,
                 tabBarStyle: {
-                    backgroundColor: COLORS.bg,
-                    borderTopColor: COLORS.border,
+                    backgroundColor: C.bg,
+                    borderTopColor: C.border,
                     borderTopWidth: 1,
-                    height: 60 + (Platform.OS === 'ios' ? insets.bottom : 8),
-                    paddingBottom: Platform.OS === 'ios' ? insets.bottom : 8,
+                    height: 56 + (Platform.OS === 'ios' ? insets.bottom : 12),
+                    paddingBottom: Platform.OS === 'ios' ? insets.bottom : 12,
                     paddingTop: 8,
                     elevation: 0,
                     shadowOpacity: 0,
@@ -34,7 +34,11 @@ export default function TabsLayout() {
                 tabBarLabelStyle: {
                     fontSize: 11,
                     fontWeight: '600',
-                    letterSpacing: 0.3,
+                    letterSpacing: 0.2,
+                    marginTop: 2,
+                },
+                tabBarItemStyle: {
+                    paddingTop: 0,
                 },
             }}
         >
@@ -55,7 +59,12 @@ export default function TabsLayout() {
                         <Ionicons name="receipt" size={size} color={color} />
                     ),
                     tabBarBadge: expenses.length > 0 ? expenses.length : undefined,
-                    tabBarBadgeStyle: { backgroundColor: '#03dac6', fontSize: 10 },
+                    tabBarBadgeStyle: {
+                        backgroundColor: '#03dac6',
+                        fontSize: 10,
+                        color: '#0d0f14',
+                        fontWeight: '700',
+                    },
                 }}
             />
             <Tabs.Screen
@@ -63,9 +72,7 @@ export default function TabsLayout() {
                 options={{
                     title: 'Balances',
                     tabBarIcon: ({ color, size }) => (
-                        <View>
-                            <Ionicons name="wallet" size={size} color={color} />
-                        </View>
+                        <Ionicons name="wallet" size={size} color={color} />
                     ),
                 }}
             />
