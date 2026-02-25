@@ -1,15 +1,31 @@
 import { useApp } from '@/app/context/AppContext';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const C = {
     active: '#bb86fc',
-    inactive: '#4a4a5a',
+    inactive: '#3d3d52',
     bg: '#0d0f14',
-    border: 'rgba(255,255,255,0.06)',
+    cardBg: '#13161e',
+    border: 'rgba(187,134,252,0.12)',
 };
+
+function TabIcon({ name, color, focused }: { name: any; color: string; focused: boolean }) {
+    return (
+        <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 44,
+            height: 44,
+            borderRadius: 14,
+            backgroundColor: focused ? 'rgba(187,134,252,0.14)' : 'transparent',
+        }}>
+            <Ionicons name={name} size={22} color={color} />
+        </View>
+    );
+}
 
 export default function TabsLayout() {
     const insets = useSafeAreaInsets();
@@ -22,23 +38,27 @@ export default function TabsLayout() {
                 tabBarActiveTintColor: C.active,
                 tabBarInactiveTintColor: C.inactive,
                 tabBarStyle: {
-                    backgroundColor: C.bg,
+                    backgroundColor: C.cardBg,
                     borderTopColor: C.border,
                     borderTopWidth: 1,
-                    height: 56 + (Platform.OS === 'ios' ? insets.bottom : 12),
+                    height: 64 + (Platform.OS === 'ios' ? insets.bottom : 12),
                     paddingBottom: Platform.OS === 'ios' ? insets.bottom : 12,
-                    paddingTop: 8,
-                    elevation: 0,
-                    shadowOpacity: 0,
+                    paddingTop: 6,
+                    paddingHorizontal: 4,
+                    elevation: 20,
+                    shadowColor: '#bb86fc',
+                    shadowOffset: { width: 0, height: -2 },
+                    shadowOpacity: 0.08,
+                    shadowRadius: 12,
                 },
                 tabBarLabelStyle: {
-                    fontSize: 11,
-                    fontWeight: '600',
-                    letterSpacing: 0.2,
-                    marginTop: 2,
+                    fontSize: 10,
+                    fontWeight: '700',
+                    letterSpacing: 0.3,
+                    marginTop: 0,
                 },
                 tabBarItemStyle: {
-                    paddingTop: 0,
+                    paddingTop: 2,
                 },
             }}
         >
@@ -46,8 +66,8 @@ export default function TabsLayout() {
                 name="index"
                 options={{
                     title: 'Home',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="home" size={size} color={color} />
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabIcon name="home" color={color} focused={focused} />
                     ),
                 }}
             />
@@ -55,8 +75,8 @@ export default function TabsLayout() {
                 name="expenses"
                 options={{
                     title: 'Expenses',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="receipt" size={size} color={color} />
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabIcon name="receipt" color={color} focused={focused} />
                     ),
                     tabBarBadge: expenses.length > 0 ? expenses.length : undefined,
                     tabBarBadgeStyle: {
@@ -64,6 +84,9 @@ export default function TabsLayout() {
                         fontSize: 10,
                         color: '#0d0f14',
                         fontWeight: '700',
+                        minWidth: 18,
+                        height: 18,
+                        borderRadius: 9,
                     },
                 }}
             />
@@ -71,8 +94,8 @@ export default function TabsLayout() {
                 name="balances"
                 options={{
                     title: 'Balances',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="wallet" size={size} color={color} />
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabIcon name="wallet" color={color} focused={focused} />
                     ),
                 }}
             />
@@ -80,8 +103,8 @@ export default function TabsLayout() {
                 name="analytics"
                 options={{
                     title: 'Analytics',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="bar-chart" size={size} color={color} />
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabIcon name="bar-chart" color={color} focused={focused} />
                     ),
                 }}
             />
