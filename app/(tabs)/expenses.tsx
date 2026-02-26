@@ -1,4 +1,5 @@
 import { useApp, CATEGORY_ICONS, formatINR } from '@/app/context/AppContext';
+import { AD_UNIT_IDS } from '@/app/utils/ads';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import {
@@ -9,6 +10,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const C = {
@@ -116,6 +118,13 @@ export default function ExpensesScreen() {
                     </View>
                 </ScrollView>
             )}
+            {/* Banner Ad */}
+            <View style={styles.bannerContainer}>
+                <BannerAd
+                    unitId={AD_UNIT_IDS.banner}
+                    size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                />
+            </View>
         </SafeAreaView>
     );
 }
@@ -168,4 +177,10 @@ const styles = StyleSheet.create({
     itemDate: { color: '#454555', fontSize: 11, fontWeight: '500' },
     hintRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 8 },
     hint: { textAlign: 'center', color: '#3a3a4a', fontSize: 12 },
+    bannerContainer: {
+        alignItems: 'center',
+        backgroundColor: '#0d0f14',
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255,255,255,0.05)',
+    },
 });

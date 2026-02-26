@@ -1,11 +1,15 @@
 import { useApp, CATEGORIES, CATEGORY_ICONS, formatINR } from '@/app/context/AppContext';
+import { AD_UNIT_IDS } from '@/app/utils/ads';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useRef, useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native';
+import { RewardedAd, RewardedAdEventType, AdEventType } from 'react-native-google-mobile-ads';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const C = {
@@ -63,6 +67,31 @@ function BarRow({ label, value, max, color, icon }: { label: string; value: numb
 
 export default function AnalyticsScreen() {
     const { members, expenses, getMemberBalances, totalExpense } = useApp();
+
+    // ── Rewarded Ad ──────────────────────────────────────────────
+    const [rewardedUnlocked, setRewardedUnlocked] = useState(false);
+    const [adLoading, setAdLoading] = useState(false);
+    const rewardedRef = useRef<RewardedAd | null>(null);
+
+    const loadRewarded = () => {
+        const ad = RewardedAd.createForAdRequest(AD_UNIT_IDS.rewarded);
+        rewardedRef.current = ad;
+
+        ad.addAdEventListener(RewardedAdEventType.LOADED, () => {
+            setAdLoading(false);
+            ad.show();
+        });
+        ad.addAdEventListener(RewardedAdEventType.EARNED_REWARD, () => {
+            setRewardedUnlocked(true);
+        });
+        ad.addAdEventListener(AdEventType.ERROR, () => {
+            setAdLoading(false);
+        });
+
+        ad.load();
+        setAdLoading(true);
+    };
+    // ─────────────────────────────────────────────────────────────
 
     const catTotals: Record<string, number> = {};
     CATEGORIES.forEach(c => { catTotals[c] = 0; });
@@ -141,28 +170,49 @@ export default function AnalyticsScreen() {
                         </View>
                     )}
 
-                    {/* Member Contributions */}
+                    {/* Member Contributions — gated behind rewarded ad */}
                     {members.length > 0 && (
-                        <View style={styles.card}>
-                            <View style={styles.cardHeader}>
-                                <View style={[styles.cardIconBg, { backgroundColor: 'rgba(3,218,198,0.12)' }]}>
-                                    <Ionicons name="people" size={16} color={C.teal} />
+                        rewardedUnlocked ? (
+                            <View style={styles.card}>
+                                <View style={styles.cardHeader}>
+                                    <View style={[styles.cardIconBg, { backgroundColor: 'rgba(3,218,198,0.12)' }]}>
+                                        <Ionicons name="people" size={16} color={C.teal} />
+                                    </View>
+                                    <Text style={[styles.cardTitle, { color: C.teal }]}>Paid by Member</Text>
                                 </View>
-                                <Text style={[styles.cardTitle, { color: C.teal }]}>Paid by Member</Text>
+                                {members.map((m, i) => {
+                                    const paid = getMemberBalances[m.name]?.paid || 0;
+                                    return (
+                                        <BarRow
+                                            key={m.id}
+                                            label={m.name}
+                                            value={paid}
+                                            max={maxMember}
+                                            color={BAR_COLORS[i % BAR_COLORS.length]}
+                                        />
+                                    );
+                                })}
                             </View>
-                            {members.map((m, i) => {
-                                const paid = getMemberBalances[m.name]?.paid || 0;
-                                return (
-                                    <BarRow
-                                        key={m.id}
-                                        label={m.name}
-                                        value={paid}
-                                        max={maxMember}
-                                        color={BAR_COLORS[i % BAR_COLORS.length]}
-                                    />
-                                );
-                            })}
-                        </View>
+                        ) : (
+                            <View style={styles.rewardCard}>
+                                <View style={styles.rewardLock}>
+                                    <Ionicons name="lock-closed" size={22} color={C.purple} />
+                                </View>
+                                <View style={{ flex: 1, marginLeft: 14 }}>
+                                    <Text style={styles.rewardTitle}>Member Contributions</Text>
+                                    <Text style={styles.rewardSub}>Watch a short ad to unlock who paid the most</Text>
+                                </View>
+                                <TouchableOpacity
+                                    style={[styles.watchBtn, adLoading && { opacity: 0.6 }]}
+                                    onPress={loadRewarded}
+                                    disabled={adLoading}
+                                    activeOpacity={0.8}
+                                >
+                                    <Ionicons name={adLoading ? 'hourglass-outline' : 'play'} size={14} color="#0d0f14" />
+                                    <Text style={styles.watchBtnText}>{adLoading ? 'Loading…' : 'Watch'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
                     )}
 
                     {/* Top Expenses */}
@@ -250,4 +300,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center',
     },
     rankText: { fontSize: 14, fontWeight: '800' },
+    // Rewarded ad card
+    rewardCard: {
+        flexDirection: 'row', alignItems: 'center',
+        backgroundColor: C.card, borderRadius: 20, padding: 16, marginBottom: 16,
+        borderWidth: 1, borderColor: 'rgba(187,134,252,0.2)',
+    },
+    rewardLock: {
+        width: 44, height: 44, borderRadius: 14,
+        backgroundColor: 'rgba(187,134,252,0.12)',
+        justifyContent: 'center', alignItems: 'center',
+    },
+    rewardTitle: { color: '#fff', fontSize: 14, fontWeight: '700', marginBottom: 3 },
+    rewardSub: { color: C.subText, fontSize: 12, lineHeight: 17 },
+    watchBtn: {
+        flexDirection: 'row', alignItems: 'center', gap: 5,
+        backgroundColor: C.purple, borderRadius: 12,
+        paddingHorizontal: 12, paddingVertical: 8,
+        shadowColor: C.purple, shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.4, shadowRadius: 6,
+        elevation: 4,
+    },
+    watchBtnText: { color: '#0d0f14', fontSize: 12, fontWeight: '800' },
 });

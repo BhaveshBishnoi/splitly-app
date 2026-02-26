@@ -182,3 +182,6 @@ export const CATEGORY_ICONS: Record<string, string> = {
 export function formatINR(amount: number): string {
     return '₹' + amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+// Required by expo-router (file lives inside app/ directory)
+export default AppProvider;
