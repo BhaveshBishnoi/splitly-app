@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Splitly",
-    "slug": "splitly",
+    "slug": "Contri-Money-App-React-Native-Mobile-App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -57,6 +57,7 @@
       "eas": {
         "projectId": "e1ed62e3-b2e5-403c-bfa7-e769c51276f9"
       }
-    }
+    },
+    "owner": "bhaveshbishnoi"
   }
 }
