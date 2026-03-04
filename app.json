@@ -2,7 +2,7 @@
   "expo": {
     "name": "Splitly",
     "slug": "Contri-Money-App-React-Native-Mobile-App",
-    "version": "2.0.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "splitly",
@@ -21,7 +21,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.bhaveshbishnoi.splitly",
-      "versionCode": 2
+      "versionCode": 1
     },
     "web": {
       "output": "static",
