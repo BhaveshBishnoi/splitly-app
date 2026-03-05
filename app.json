@@ -21,7 +21,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.bhaveshbishnoi.splitly",
-      "versionCode": 1
+      "versionCode": 2
     },
     "web": {
       "output": "static",
